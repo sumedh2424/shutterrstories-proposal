@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShutterStories — Social Media Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue: #2A3EE8;
+  --blue-dark: #1220B0;
+  --blue-mid: #3D52F5;
+  --blue-light: #6B7FFF;
+  --blue-glow: #4A5EFF;
+  --cream: #F5F0E8;
+  --cream-dark: #E8E0CE;
+  --cream-mid: #EDE7D8;
+  --white: #FFFFFF;
+  --gold: #D4AF37;
+  --gold-light: #F0D060;
+  --text-dark: #080E30;
+  --text-mid: #2E3870;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ────────────────────────────────────────
+   SCROLL REVEAL
+──────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.75s cubic-bezier(.22,1,.36,1), transform 0.75s cubic-bezier(.22,1,.36,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity:0; transform:translateX(-50px); transition: opacity 0.75s cubic-bezier(.22,1,.36,1), transform 0.75s cubic-bezier(.22,1,.36,1); }
+.reveal-left.visible { opacity:1; transform:translateX(0); }
+.reveal-right { opacity:0; transform:translateX(50px); transition: opacity 0.75s cubic-bezier(.22,1,.36,1), transform 0.75s cubic-bezier(.22,1,.36,1); }
+.reveal-right.visible { opacity:1; transform:translateX(0); }
+
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+.delay-6 { transition-delay: 0.6s; }
+.delay-7 { transition-delay: 0.7s; }
+.delay-8 { transition-delay: 0.8s; }
+
+/* ────────────────────────────────────────
+   KEYFRAMES
+──────────────────────────────────────── */
+@keyframes float {
+  0%,100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(3deg); }
+}
+@keyframes floatReverse {
+  0%,100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(20px) rotate(-3deg); }
+}
+@keyframes pulse-glow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(74,94,255,0); }
+  50% { box-shadow: 0 0 40px 10px rgba(74,94,255,0.25); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes bar-grow {
+  from { width: 0 !important; }
+}
+@keyframes dash-draw {
+  from { stroke-dashoffset: 400; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes count-up {
+  from { opacity:0; transform: translateY(10px); }
+  to { opacity:1; transform: translateY(0); }
+}
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(80px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(80px) rotate(-360deg); }
+}
+@keyframes fadeScale {
+  from { opacity:0; transform: scale(0.85); }
+  to { opacity:1; transform: scale(1); }
+}
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ────────────────────────────────────────
+   COVER
+──────────────────────────────────────── */
+.cover {
+  background: var(--cream);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover-left {
+  padding: 64px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+/* Animated gradient mesh on cream side */
+.cover-left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(42,62,232,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cover-left > * { position: relative; z-index: 1; }
+
+.brand-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-tag::before {
+  content: '';
+  width: 24px;
+  height: 2px;
+  background: var(--blue);
+  display: inline-block;
+}
+.brand-sub { font-size: 11px; font-weight: 400; color: var(--text-mid); margin-top: 4px; margin-left: 32px; }
+
+.cover-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(50px, 5.5vw, 84px);
+  font-weight: 800;
+  line-height: 1.0;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  animation: fadeScale 1s cubic-bezier(.22,1,.36,1) 0.3s both;
+}
+.cover-title span {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-pill {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 50%, var(--blue-light) 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite, fadeScale 1s cubic-bezier(.22,1,.36,1) 0.5s both;
+  color: var(--white);
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(26px, 3.2vw, 44px);
+  font-weight: 800;
+  padding: 14px 32px;
+  border-radius: 14px;
+  margin-bottom: 44px;
+  box-shadow: 0 8px 32px rgba(42,62,232,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.cover-meta { display: flex; gap: 48px; animation: fadeScale 1s cubic-bezier(.22,1,.36,1) 0.7s both; }
+.cover-meta-item label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+}
+.cover-meta-item p { font-size: 15px; font-weight: 700; color: var(--blue); margin-top: 4px; }
+
+/* RIGHT PANEL — deep blue with mesh */
+.cover-right {
+  background: linear-gradient(145deg, #1A2BC4 0%, #2A3EE8 40%, #1635CC 70%, #0F1F9E 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 64px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated grain texture overlay */
+.cover-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Glowing orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.orb-1 {
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(107,127,255,0.3) 0%, transparent 70%);
+  top: -80px; right: -80px;
+  animation: float 8s ease-in-out infinite;
+}
+.orb-2 {
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%);
+  bottom: 100px; left: -60px;
+  animation: floatReverse 10s ease-in-out infinite;
+}
+.orb-3 {
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  top: 50%; right: 30%;
+  animation: float 6s ease-in-out infinite 2s;
+}
+
+.cover-right-tagline {
+  color: var(--white);
+  font-size: clamp(18px, 2.2vw, 28px);
+  font-weight: 600;
+  line-height: 1.4;
+  max-width: 360px;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+  animation: fadeScale 1s cubic-bezier(.22,1,.36,1) 0.4s both;
+}
+.cover-right-tagline span { opacity: 0.5; font-weight: 400; }
+
+.cover-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-box {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.cover-box:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,0.14);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+}
+.cover-box.tall {
+  grid-column: 1/-1; min-height: 160px;
+  flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 6px;
+  background: rgba(255,255,255,0.1);
+  animation: fadeScale 1s ease 0.6s both;
+}
+.cover-box.tall .prepared-for { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+.cover-box.tall .client-name { font-size: 20px; font-weight: 700; color: var(--white); }
+
+/* ────────────────────────────────────────
+   TICKER STRIP
+──────────────────────────────────────── */
+.ticker-strip {
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.ticker-inner {
+  display: inline-block;
+  animation: ticker 25s linear infinite;
+}
+.ticker-inner span {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin: 0 32px;
+}
+.ticker-inner .dot { color: var(--gold); margin: 0 8px; }
+
+/* ────────────────────────────────────────
+   SECTIONS
+──────────────────────────────────────── */
+section { padding: 96px 80px; position: relative; overflow: hidden; }
+
+.section-eyebrow {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-eyebrow::before {
+  content: '';
+  width: 20px; height: 2px;
+  background: currentColor;
+  display: inline-block;
+}
+
+section.blue-bg .section-eyebrow { color: rgba(255,255,255,0.5); }
+section.blue-bg .section-eyebrow::before { background: rgba(255,255,255,0.4); }
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(30px, 3.8vw, 52px);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+}
+section.blue-bg .section-title { color: var(--white); }
+
+.section-body {
+  font-size: 15px;
+  color: var(--text-mid);
+  max-width: 620px;
+  line-height: 1.8;
+}
+section.blue-bg .section-body { color: rgba(255,255,255,0.65); }
+
+/* BG variants */
+.blue-bg {
+  background: linear-gradient(145deg, #1220B0 0%, #2A3EE8 45%, #1830CC 100%);
+}
+.white-bg { background: #FFFFFF; }
+.cream-bg {
+  background: linear-gradient(160deg, #F5F0E8 0%, #EDE7D8 100%);
+}
+.cream-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 90% 10%, rgba(42,62,232,0.05) 0%, transparent 55%),
+              radial-gradient(ellipse at 10% 90%, rgba(212,175,55,0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* ────────────────────────────────────────
+   AGENDA
+──────────────────────────────────────── */
+.agenda-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 48px;
+}
+
+.agenda-item {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 60px;
+  padding: 20px 30px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+.agenda-item:hover {
+  transform: translateX(6px);
+  background: rgba(255,255,255,0.16);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.agenda-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.35);
+  min-width: 24px;
+}
+.agenda-item-text { font-size: 14px; font-weight: 700; color: var(--white); }
+
+/* ────────────────────────────────────────
+   STATS
+──────────────────────────────────────── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  margin: 56px 0 0;
+  box-shadow: 0 20px 60px rgba(42,62,232,0.25), 0 0 0 1px rgba(42,62,232,0.1);
+}
+
+.stat-item {
+  background: linear-gradient(145deg, #1A2BC4, #2A3EE8);
+  padding: 40px 28px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.stat-item:hover { transform: translateY(-3px); }
+.stat-item:last-child { border-right: none; }
+.stat-item::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+  display: block;
+}
+.stat-label { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 8px; font-weight: 600; letter-spacing: 0.05em; }
+
+/* ────────────────────────────────────────
+   TAGS
+──────────────────────────────────────── */
+.tag-wrap { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+.tag {
+  background: var(--white);
+  color: var(--text-dark);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 1.5px solid var(--cream-dark);
+  box-shadow: 0 2px 8px rgba(42,62,232,0.06);
+  transition: all 0.25s ease;
+}
+.tag:hover {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(42,62,232,0.25);
+}
+
+/* ────────────────────────────────────────
+   PACKAGE CARDS
+──────────────────────────────────────── */
+.packages-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 48px;
+}
+
+.pkg-card {
+  border-radius: 28px;
+  padding: 44px 40px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s ease;
+}
+
+.pkg-card:hover { transform: translateY(-8px); }
+
+.pkg-card.card-cream {
+  background: linear-gradient(155deg, #FFFFFF 0%, #F5F0E8 100%);
+  border: 1.5px solid var(--cream-dark);
+  box-shadow: 0 8px 32px rgba(42,62,232,0.08), 0 1px 0 rgba(255,255,255,0.8) inset;
+}
+.pkg-card.card-cream:hover {
+  box-shadow: 0 24px 60px rgba(42,62,232,0.15), 0 1px 0 rgba(255,255,255,0.8) inset;
+}
+
+.pkg-card.card-blue {
+  background: linear-gradient(145deg, #1220B0 0%, #2A3EE8 45%, #1635CC 100%);
+  box-shadow: 0 16px 48px rgba(42,62,232,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.pkg-card.card-blue:hover {
+  box-shadow: 0 32px 80px rgba(42,62,232,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Sheen effect on hover */
+.pkg-card::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -60%;
+  width: 40%;
+  height: 300%;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
+  transform: rotate(20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.pkg-card:hover::after { left: 160%; }
+
+.pkg-number {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 10px;
+}
+.pkg-card.card-blue .pkg-number { color: white; }
+.pkg-card.card-cream .pkg-number { color: var(--text-mid); }
+
+.pkg-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.pkg-card.card-cream .pkg-name { color: var(--text-dark); }
+.pkg-card.card-blue .pkg-name { color: white; }
+
+.pkg-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  margin: 20px 0 4px;
+  line-height: 1;
+}
+.pkg-card.card-cream .pkg-price { color: var(--blue); }
+.pkg-card.card-blue .pkg-price { color: var(--white); }
+
+.pkg-price-note { font-size: 12px; opacity: 0.55; margin-bottom: 28px; }
+.pkg-card.card-blue .pkg-price-note { color: white; }
+
+.pkg-divider { height: 1px; margin: 22px 0; }
+.pkg-card.card-cream .pkg-divider { background: linear-gradient(to right, var(--cream-dark), transparent); }
+.pkg-card.card-blue .pkg-divider { background: linear-gradient(to right, rgba(255,255,255,0.15), transparent); }
+
+.pkg-section-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.pkg-card.card-cream .pkg-section-title { color: var(--text-mid); opacity: 0.6; }
+.pkg-card.card-blue .pkg-section-title { color: rgba(255,255,255,0.5); }
+
+.pkg-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.pkg-list li {
+  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.55;
+}
+.pkg-list li::before {
+  content: '✦';
+  font-size: 8px;
+  margin-top: 5px;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+.pkg-card.card-blue .pkg-list li { color: rgba(255,255,255,0.8); }
+.pkg-card.card-cream .pkg-list li { color: var(--text-mid); }
+
+/* Gold badge on pkg-02 */
+.pkg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #C9A227, #F0D060);
+  color: #3A2800;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+/* ────────────────────────────────────────
+   COMPARISON TABLE
+──────────────────────────────────────── */
+.compare-wrap {
+  margin-top: 40px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(42,62,232,0.1);
+  border: 1.5px solid var(--cream-dark);
+}
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+}
+.compare-header {
+  padding: 22px 24px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(160deg, #F5F0E8 0%, #EDE7D8 100%);
+  color: var(--text-mid);
+  border-bottom: 2px solid var(--cream-dark);
+}
+.compare-header.blue {
+  background: linear-gradient(135deg, #1A2BC4, #2A3EE8);
+  color: white;
+}
+.compare-cell {
+  padding: 15px 24px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--cream-dark);
+  border-right: 1px solid var(--cream-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-mid);
+  transition: background 0.2s;
+}
+.compare-cell:hover { background: rgba(42,62,232,0.03); }
+.compare-cell.feature-col {
+  font-weight: 700;
+  color: var(--text-dark);
+  background: rgba(245,240,232,0.6);
+}
+.compare-cell.yes { color: var(--blue); font-weight: 600; }
+.compare-cell.highlight { background: rgba(42,62,232,0.04); }
+.check { font-size: 14px; color: var(--blue); }
+
+/* ────────────────────────────────────────
+   DELIVERABLES TABLE
+──────────────────────────────────────── */
+.deliverables-wrap {
+  margin-top: 40px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+}
+.deliverables-table { width: 100%; border-collapse: collapse; }
+.deliverables-table th {
+  background: linear-gradient(135deg, #1A2BC4 0%, #2A3EE8 100%);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 18px 22px;
+  text-align: left;
+}
+.deliverables-table td {
+  padding: 14px 22px;
+  font-size: 13px;
+  border-bottom: 1px solid #F0EBE0;
+  vertical-align: middle;
+}
+.deliverables-table tr:last-child td { border-bottom: none; }
+.deliverables-table tr:nth-child(even) td { background: #FDFAF5; }
+.deliverables-table tr:nth-child(odd) td { background: white; }
+.deliverables-table tr:hover td { background: rgba(42,62,232,0.03); }
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.badge.light {
+  background: rgba(42,62,232,0.1);
+  color: var(--blue);
+}
+
+/* ────────────────────────────────────────
+   CHARTS
+──────────────────────────────────────── */
+.chart-wrap {
+  background: white;
+  border-radius: 22px;
+  padding: 36px;
+  border: 1.5px solid #F0EBE0;
+  box-shadow: 0 4px 24px rgba(42,62,232,0.06);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.chart-wrap:hover {
+  box-shadow: 0 12px 40px rgba(42,62,232,0.12);
+  transform: translateY(-3px);
+}
+.chart-title { font-size: 15px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
+.chart-subtitle { font-size: 12px; color: var(--text-mid); margin-bottom: 28px; }
+
+.bar-chart { display: flex; flex-direction: column; gap: 16px; }
+.bar-row { display: flex; align-items: center; gap: 16px; }
+.bar-label { font-size: 12px; font-weight: 600; color: var(--text-mid); width: 150px; flex-shrink: 0; }
+.bar-track {
+  flex: 1; height: 32px;
+  background: linear-gradient(to right, #F0EBE0, #F8F5EE);
+  border-radius: 8px; overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  color: white;
+  width: 0;
+  transition: width 1.4s cubic-bezier(.22,1,.36,1);
+}
+.bar-fill.blue { background: linear-gradient(90deg, #1A2BC4, #4A5EFF); }
+.bar-fill.mid  { background: linear-gradient(90deg, #3D52F5, #7B8FFF); }
+.bar-fill.light-blue { background: linear-gradient(90deg, #5569FF, #8899FF); }
+
+/* Donut */
+.donut-wrap { display: flex; gap: 36px; align-items: center; margin-top: 4px; }
+.donut-legend { display: flex; flex-direction: column; gap: 12px; }
+.legend-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-mid); font-weight: 500; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ────────────────────────────────────────
+   CONTENT CALENDAR
+──────────────────────────────────────── */
+.calendar-wrap { margin-top: 40px; overflow-x: auto; border-radius: 20px; box-shadow: 0 8px 32px rgba(42,62,232,0.08); }
+.calendar-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.calendar-table th {
+  background: linear-gradient(135deg, #1220B0, #2A3EE8);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 16px 14px;
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+.calendar-table th:first-child { text-align: left; }
+.calendar-table td {
+  padding: 14px 12px;
+  font-size: 13px;
+  border: 1px solid #F0EBE0;
+  text-align: center;
+  vertical-align: middle;
+  background: white;
+  transition: background 0.2s;
+}
+.calendar-table td:first-child {
+  text-align: left;
+  font-weight: 700;
+  color: var(--text-dark);
+  background: linear-gradient(to right, #F5F0E8, #FDFAF5);
+}
+.calendar-table tr:hover td { background: rgba(42,62,232,0.03); }
+.calendar-table tr:hover td:first-child { background: linear-gradient(to right, #EDE7D8, #F5F0E8); }
+
+.cal-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 800;
+  color: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cal-dot:hover { transform: scale(1.2); }
+.cal-dot.reel { background: linear-gradient(135deg, #1A2BC4, #4A5EFF); box-shadow: 0 3px 10px rgba(42,62,232,0.35); }
+.cal-dot.carousel { background: linear-gradient(135deg, #5569FF, #8B9FFF); box-shadow: 0 3px 10px rgba(85,105,255,0.35); }
+.cal-dot.story { background: rgba(42,62,232,0.12); color: var(--blue); }
+
+/* ────────────────────────────────────────
+   TIMELINE
+──────────────────────────────────────── */
+.timeline { display: flex; flex-direction: column; gap: 0; margin-top: 48px; position: relative; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 23px; top: 24px; bottom: 24px;
+  width: 2px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+}
+.timeline-item { display: flex; gap: 28px; padding-bottom: 36px; position: relative; }
+.timeline-dot {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 15px;
+  color: white;
+  flex-shrink: 0;
+  position: relative; z-index: 1;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.timeline-item:hover .timeline-dot {
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(255,255,255,0.2);
+}
+.timeline-content { padding-top: 10px; }
+.timeline-content h4 { font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px; }
+.timeline-content p { font-size: 13.5px; color: rgba(255,255,255,0.62); line-height: 1.7; }
+
+/* ────────────────────────────────────────
+   NOTES BOX
+──────────────────────────────────────── */
+.notes-box {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-left: 3px solid rgba(212,175,55,0.7);
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin-top: 40px;
+}
+.notes-box p { font-size: 13.5px; color: rgba(255,255,255,0.68); line-height: 1.75; }
+.notes-box strong { color: white; }
+
+/* ────────────────────────────────────────
+   PRICING CARDS
+──────────────────────────────────────── */
+.price-card-1 {
+  background: white;
+  border-radius: 24px;
+  padding: 44px;
+  border: 1.5px solid var(--cream-dark);
+  box-shadow: 0 8px 32px rgba(42,62,232,0.07), 0 1px 0 rgba(255,255,255,0.8) inset;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.price-card-1:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(42,62,232,0.14); }
+
+.price-card-2 {
+  background: linear-gradient(145deg, #1220B0 0%, #2A3EE8 50%, #1635CC 100%);
+  border-radius: 24px;
+  padding: 44px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(42,62,232,0.4);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.price-card-2:hover { transform: translateY(-6px); box-shadow: 0 32px 80px rgba(42,62,232,0.5); }
+.price-card-2::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ────────────────────────────────────────
+   FOOTER
+──────────────────────────────────────── */
+.footer {
+  background: linear-gradient(145deg, #080E30 0%, #0F1B6E 50%, #1220B0 100%);
+  padding: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(42,62,232,0.3) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 50%, rgba(107,127,255,0.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+.footer > * { position: relative; z-index: 1; }
+.footer-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: white;
+  background: linear-gradient(135deg, #fff 60%, rgba(212,175,55,0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.footer-contact { color: rgba(255,255,255,0.5); font-size: 13px; margin-top: 8px; }
+.footer-cta {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F0EBE0 100%);
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 18px 40px;
+  border-radius: 60px;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block;
+}
+.footer-cta:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 16px 48px rgba(0,0,0,0.35); }
+
+/* ────────────────────────────────────────
+   RESPONSIVE
+──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .cover { grid-template-columns: 1fr; }
+  .cover-right { min-height: 70vh; }
+  .agenda-grid, .packages-grid { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  section { padding: 64px 28px; }
+  .footer { flex-direction: column; gap: 32px; text-align: center; padding: 56px 28px; }
+  .stats-bar { grid-template-columns: 1fr 1fr; }
+  .donut-wrap { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-left">
+    <div>
+      <div class="brand-tag">ShutterStories</div>
+      <div class="brand-sub">Content & Social Media Management</div>
+    </div>
+
+    <!-- Floating pen-tool SVG -->
+    <svg style="position:absolute;top:28%;right:10%;width:160px;opacity:0.55;animation:float 7s ease-in-out infinite;" viewBox="0 0 180 90" fill="none">
+      <path d="M10 80 Q90 10 170 50" stroke="#2A3EE8" stroke-width="2" fill="none" stroke-dasharray="200" style="animation:dash-draw 2s ease 0.5s both;"/>
+      <rect x="6" y="76" width="8" height="8" rx="2" fill="none" stroke="#2A3EE8" stroke-width="1.5"/>
+      <rect x="166" y="46" width="8" height="8" rx="2" fill="none" stroke="#2A3EE8" stroke-width="1.5"/>
+      <circle cx="90" cy="34" r="3.5" fill="#2A3EE8" opacity="0.7"/>
+      <path d="M152 56 L170 73 L164 77 Z" fill="#2A3EE8" opacity="0.5"/>
+    </svg>
+
+    <!-- Small orbiting dot -->
+    <div style="position:absolute;top:42%;right:14%;width:10px;height:10px;border-radius:50%;background:var(--blue);opacity:0.3;animation:orbit 12s linear infinite;"></div>
+
+    <div>
+      <div class="cover-title reveal">
+        <span>Social Media</span><br>Campaign<br>Strategy
+      </div>
+      <div class="cover-pill reveal delay-2">Proposal 2026</div>
+    </div>
+
+    <div class="cover-meta reveal delay-3">
+      <div class="cover-meta-item">
+        <label>Prepared by</label>
+        <p>ShutterStories</p>
+      </div>
+      <div class="cover-meta-item">
+        <label>Presented Date</label>
+        <p>June 2026</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-right">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="cover-right-tagline">
+      Crafting content that doesn't just look beautiful—<span>but drives engagement, builds communities, and grows brands.</span>
+    </div>
+
+    <div class="cover-boxes">
+      <div class="cover-box tall reveal delay-1">
+        <svg width="60" height="38" viewBox="0 0 60 38" fill="none" style="margin-bottom:12px;">
+          <rect x="0" y="0" width="26" height="26" rx="6" fill="none" stroke="white" stroke-width="1.8" opacity="0.6"/>
+          <rect x="14" y="12" width="26" height="26" rx="6" fill="none" stroke="white" stroke-width="1.8" opacity="0.35"/>
+        </svg>
+        <div class="prepared-for">Driving</div>
+        <div class="client-name">Brand Awareness,<br>Engagement & Conversions</div>
+      </div>
+      <div class="cover-box reveal delay-2">
+        <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+          <rect x="8" y="38" width="36" height="4" rx="2" fill="white" opacity="0.55"/>
+          <path d="M26 34 C26 34 12 34 12 24 C12 16.27 18.27 10 26 10 C33.73 10 40 16.27 40 24 C40 34 26 34 26 34Z" fill="white" opacity="0.5"/>
+          <path d="M26 10 L26 6M14 16 L10 13M38 16 L42 13" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="cover-box reveal delay-3">
+        <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+          <path d="M6 42 L20 20 L28 30 L36 14 L46 42 Z" fill="white" opacity="0.45"/>
+          <path d="M6 42 L20 20 L28 30 L36 14 L46 42" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+          <circle cx="36" cy="14" r="4" fill="white" opacity="0.8"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TICKER ══════════════════════════════════════════ -->
+<div class="ticker-strip">
+  <div class="ticker-inner">
+    <span>12 Reels Monthly</span><span class="dot">✦</span>
+    <span>4 Carousel Posts</span><span class="dot">✦</span>
+    <span>Full Social Management</span><span class="dot">✦</span>
+    <span>Monthly Analytics Report</span><span class="dot">✦</span>
+    <span>Community Growth</span><span class="dot">✦</span>
+    <span>Content Calendar</span><span class="dot">✦</span>
+    <span>Cinematic Editing</span><span class="dot">✦</span>
+    <span>Colour Grading</span><span class="dot">✦</span>
+    <span>Hashtag Research</span><span class="dot">✦</span>&nbsp;&nbsp;&nbsp;&nbsp;
+    <span>12 Reels Monthly</span><span class="dot">✦</span>
+    <span>4 Carousel Posts</span><span class="dot">✦</span>
+    <span>Full Social Management</span><span class="dot">✦</span>
+    <span>Monthly Analytics Report</span><span class="dot">✦</span>
+    <span>Community Growth</span><span class="dot">✦</span>
+    <span>Content Calendar</span><span class="dot">✦</span>
+    <span>Cinematic Editing</span><span class="dot">✦</span>
+    <span>Colour Grading</span><span class="dot">✦</span>
+    <span>Hashtag Research</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- ══ AGENDA ══════════════════════════════════════════ -->
+<section class="blue-bg">
+  <div style="position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(107,127,255,0.18) 0%,transparent 70%);top:-120px;right:-100px;pointer-events:none;animation:float 10s ease-in-out infinite;"></div>
+  <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,0.1) 0%,transparent 70%);bottom:-60px;left:-50px;pointer-events:none;animation:floatReverse 8s ease-in-out infinite;"></div>
+
+  <div class="section-eyebrow reveal">What's Inside</div>
+  <div class="section-title reveal delay-1">Agenda</div>
+
+  <div class="agenda-grid">
+    <div class="agenda-item reveal delay-1"><span class="agenda-num">01</span><span class="agenda-item-text">Campaign Overview</span></div>
+    <div class="agenda-item reveal delay-2"><span class="agenda-num">02</span><span class="agenda-item-text">Creative Direction</span></div>
+    <div class="agenda-item reveal delay-2"><span class="agenda-num">03</span><span class="agenda-item-text">Goals & Objectives</span></div>
+    <div class="agenda-item reveal delay-3"><span class="agenda-num">04</span><span class="agenda-item-text">Posting & Timeline Plan</span></div>
+    <div class="agenda-item reveal delay-3"><span class="agenda-num">05</span><span class="agenda-item-text">Package Details</span></div>
+    <div class="agenda-item reveal delay-4"><span class="agenda-num">06</span><span class="agenda-item-text">Deliverables Breakdown</span></div>
+    <div class="agenda-item reveal delay-4"><span class="agenda-num">07</span><span class="agenda-item-text">Content Calendar</span></div>
+    <div class="agenda-item reveal delay-5"><span class="agenda-num">08</span><span class="agenda-item-text">Investment & Next Steps</span></div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══════════════════════════════════════════ -->
+<section class="cream-bg">
+  <div class="section-eyebrow reveal">Who We Are</div>
+  <div class="section-title reveal delay-1">Built for Brands<br>That Want to Stand Out</div>
+  <div class="section-body reveal delay-2">ShutterStories is a creative content and social media management studio dedicated to building brands through intentional storytelling. We blend cinematic production quality with data-driven social strategy to deliver content that earns attention and grows real communities.</div>
+
+  <div class="tag-wrap reveal delay-3">
+    <span class="tag">📷 iPhone & Camera Reels</span>
+    <span class="tag">🎨 Creative Direction</span>
+    <span class="tag">📊 Analytics & Reporting</span>
+    <span class="tag">🗓️ Content Calendar</span>
+    <span class="tag">💬 Community Management</span>
+    <span class="tag">🔍 Hashtag Research</span>
+    <span class="tag">🎬 Sound Design</span>
+    <span class="tag">✏️ Caption Writing</span>
+  </div>
+
+  <div class="stats-bar reveal delay-4">
+    <div class="stat-item">
+      <span class="stat-value" data-count="12">0</span>
+      <div class="stat-label">Reels / Month</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value" data-count="4">0</span>
+      <div class="stat-label">Carousels / Month</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value" data-count="5">0</span>
+      <div class="stat-label">Shoot Days (Pkg 02)</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value" data-count="20">0</span>
+      <div class="stat-label">Photos Edited / Month</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PACKAGES ══════════════════════════════════════════ -->
+<section class="white-bg">
+  <div class="section-eyebrow reveal">Our Offerings</div>
+  <div class="section-title reveal delay-1">Choose Your Package</div>
+  <div class="section-body reveal delay-2">Two carefully designed packages to match your brand's ambition and production needs.</div>
+
+  <div class="packages-grid">
+    <!-- PKG 01 -->
+    <div class="pkg-card card-cream reveal-left delay-1">
+      <div class="pkg-number">Package 01</div>
+      <div class="pkg-name">iPhone Content &<br>Social Media Management</div>
+      <div class="pkg-price">₹75,000</div>
+      <div class="pkg-price-note" style="color:var(--text-mid);">per month + Travel</div>
+
+      <div class="pkg-divider"></div>
+      <div class="pkg-section-title">Content Creation</div>
+      <ul class="pkg-list">
+        <li>12 iPhone Reels per month</li>
+        <li>Creative ideation & planning</li>
+        <li>Hook development and scripting</li>
+        <li>Professional editing & colour grading</li>
+        <li>Trend and competitor research</li>
+      </ul>
+
+      <div class="pkg-divider"></div>
+      <div class="pkg-section-title">Carousel Content</div>
+      <ul class="pkg-list">
+        <li>4 Carousel Posts per month (1 per week)</li>
+        <li>5 professionally edited photographs each</li>
+      </ul>
+
+      <div class="pkg-divider"></div>
+      <div class="pkg-section-title">Social Media Management</div>
+      <ul class="pkg-list">
+        <li>Monthly content calendar</li>
+        <li>Caption writing for all posts</li>
+        <li>Keyword & hashtag research</li>
+        <li>Scheduling, publishing & page handling</li>
+        <li>Profile optimisation recommendations</li>
+      </ul>
+
+      <div class="pkg-divider"></div>
+      <div class="pkg-section-title">Community & Reporting</div>
+      <ul class="pkg-list">
+        <li>Response to comments & priority DMs</li>
+        <li>Monthly growth recommendations</li>
+        <li>Competitor insights</li>
+        <li>Monthly analytics report</li>
+      </ul>
+    </div>
+
+    <!-- PKG 02 -->
+    <div class="pkg-card card-blue reveal-right delay-2">
+      <div class="pkg-badge">⭐ Premium</div>
+      <div class="pkg-number">Package 02</div>
+      <div class="pkg-name">Premium Camera Content &<br>Social Media Management</div>
+      <div class="pkg-price">₹95,000</div>
+      <div class="pkg-price-note">per month + Travel</div>
+
+      <div class="pkg-divider"></div>
+      <div class="pkg-section-title">Content Creation</div>
+      <ul class="pkg-list">
+        <li>12 Professionally Shot Camera Reels</li>
+        <li>Up to 5 dedicated shooting days</li>
+        <li>Creative ideation & planning</li>
+        <li>Hook development and scripting</li>
+        <li>Cinematic editing</li>
+        <li>Professional colour grading</li>
+        <li>Sound design enhancements</li>
+        <li>Trend and competitor research</li>
+      </ul>
+
+      <div class="pkg-divider"></div>
+      <div class="pkg-section-title">Carousel Content</div>
+      <ul class="pkg-list">
+        <li>4 Carousel Posts per month (1 per week)</li>
+        <li>5 professionally edited photographs each</li>
+      </ul>
+
+      <div class="pkg-divider"></div>
+      <div class="pkg-section-title">Social Media Management</div>
+      <ul class="pkg-list">
+        <li>Monthly content calendar</li>
+        <li>Caption writing for all posts</li>
+        <li>Keyword & hashtag research</li>
+        <li>Scheduling, publishing & page handling</li>
+        <li>Profile optimisation recommendations</li>
+      </ul>
+
+      <div class="pkg-divider"></div>
+      <div class="pkg-section-title">Community & Reporting</div>
+      <ul class="pkg-list">
+        <li>Response to comments & priority DMs</li>
+        <li>Monthly growth recommendations</li>
+        <li>Competitor insights</li>
+        <li>Monthly analytics report</li>
+      </ul>
+
+      <div style="position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,0.07) 0%,transparent 70%);bottom:-60px;right:-60px;border-radius:50%;pointer-events:none;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMPARISON ══════════════════════════════════════════ -->
+<section class="cream-bg">
+  <div class="section-eyebrow reveal">Side-by-Side</div>
+  <div class="section-title reveal delay-1">Package Comparison</div>
+
+  <div class="compare-wrap reveal delay-2">
+    <div class="compare-grid">
+      <div class="compare-header">Feature</div>
+      <div class="compare-header">Package 01 — iPhone</div>
+      <div class="compare-header blue">Package 02 — Premium Camera</div>
+
+      <div class="compare-cell feature-col">Monthly Reels</div>
+      <div class="compare-cell">12 iPhone Reels</div>
+      <div class="compare-cell highlight yes">✦ 12 Cinema Reels</div>
+
+      <div class="compare-cell feature-col">Dedicated Shoot Days</div>
+      <div class="compare-cell">Flexible</div>
+      <div class="compare-cell highlight yes">✦ Up to 5 days</div>
+
+      <div class="compare-cell feature-col">Carousels / Month</div>
+      <div class="compare-cell">4 × 5 photos</div>
+      <div class="compare-cell highlight yes">✦ 4 × 5 photos</div>
+
+      <div class="compare-cell feature-col">Colour Grading</div>
+      <div class="compare-cell">✦ Professional</div>
+      <div class="compare-cell highlight yes">✦ Cinematic Grade</div>
+
+      <div class="compare-cell feature-col">Sound Design</div>
+      <div class="compare-cell">—</div>
+      <div class="compare-cell highlight yes">✦ Included</div>
+
+      <div class="compare-cell feature-col">Hook & Scripting</div>
+      <div class="compare-cell">✦ Included</div>
+      <div class="compare-cell highlight yes">✦ Included</div>
+
+      <div class="compare-cell feature-col">Social Media Management</div>
+      <div class="compare-cell">✦ Full Suite</div>
+      <div class="compare-cell highlight yes">✦ Full Suite</div>
+
+      <div class="compare-cell feature-col">Monthly Analytics Report</div>
+      <div class="compare-cell">✦ Included</div>
+      <div class="compare-cell highlight yes">✦ Included</div>
+
+      <div class="compare-cell feature-col" style="font-size:15px;font-weight:800;">Investment</div>
+      <div class="compare-cell" style="font-weight:800;font-size:15px;color:var(--blue);">₹75,000/mo</div>
+      <div class="compare-cell highlight yes" style="font-weight:800;font-size:15px;">₹95,000/mo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DELIVERABLES ══════════════════════════════════════════ -->
+<section class="white-bg">
+  <div class="section-eyebrow reveal">What You Get</div>
+  <div class="section-title reveal delay-1">Monthly Deliverables</div>
+
+  <div class="deliverables-wrap reveal delay-2">
+    <table class="deliverables-table">
+      <thead>
+        <tr>
+          <th style="width:24%">Category</th>
+          <th style="width:44%">Deliverable</th>
+          <th style="width:16%">Quantity</th>
+          <th style="width:16%">Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="3"><span class="badge">Video</span></td><td>iPhone Reels / Camera Reels</td><td>12</td><td>Monthly</td></tr>
+        <tr><td>Hook development & scripting</td><td>12</td><td>Monthly</td></tr>
+        <tr><td>Editing & colour grading</td><td>12</td><td>Monthly</td></tr>
+        <tr><td rowspan="2"><span class="badge light">Carousels</span></td><td>Carousel posts with 5 edited photos each</td><td>4</td><td>Weekly</td></tr>
+        <tr><td>Photo editing & retouching</td><td>20</td><td>Monthly</td></tr>
+        <tr><td rowspan="5"><span class="badge">Social Media</span></td><td>Monthly content calendar</td><td>1</td><td>Monthly</td></tr>
+        <tr><td>Custom captions with keywords</td><td>16+</td><td>Monthly</td></tr>
+        <tr><td>Hashtag & keyword research</td><td>Ongoing</td><td>Monthly</td></tr>
+        <tr><td>Scheduling & publishing</td><td>All posts</td><td>Ongoing</td></tr>
+        <tr><td>Profile optimisation check</td><td>1</td><td>Monthly</td></tr>
+        <tr><td rowspan="3"><span class="badge light">Growth</span></td><td>Comment & DM management</td><td>Daily</td><td>Ongoing</td></tr>
+        <tr><td>Competitor insights & analysis</td><td>1</td><td>Monthly</td></tr>
+        <tr><td>Content performance optimisation</td><td>Ongoing</td><td>Monthly</td></tr>
+        <tr><td><span class="badge">Report</span></td><td>Analytics report with insights & next-month recommendations</td><td>1</td><td>Monthly</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ CHARTS ══════════════════════════════════════════ -->
+<section class="cream-bg">
+  <div class="section-eyebrow reveal">Content Strategy</div>
+  <div class="section-title reveal delay-1">Your Monthly Content Mix</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px;">
+    <!-- Bar Chart -->
+    <div class="chart-wrap reveal-left delay-2">
+      <div class="chart-title">Content Volume by Type</div>
+      <div class="chart-subtitle">Posts per content category per month</div>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Short-form Reels</div>
+          <div class="bar-track"><div class="bar-fill blue animated-bar" data-width="75%">12</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Carousel Posts</div>
+          <div class="bar-track"><div class="bar-fill mid animated-bar" data-width="25%">4</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Captions Written</div>
+          <div class="bar-track"><div class="bar-fill light-blue animated-bar" data-width="100%">16+</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Photos Edited</div>
+          <div class="bar-track"><div class="bar-fill blue animated-bar" data-width="62%">20</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Donut Chart -->
+    <div class="chart-wrap reveal-right delay-3">
+      <div class="chart-title">Monthly Effort Allocation</div>
+      <div class="chart-subtitle">Where our studio time goes each cycle</div>
+      <div class="donut-wrap">
+        <svg id="donut-svg" width="170" height="170" viewBox="0 0 170 170" style="flex-shrink:0;">
+          <circle cx="85" cy="85" r="64" fill="none" stroke="#F0EBE0" stroke-width="26"/>
+          <!-- 45% = 180.6 of 402.1 -->
+          <circle cx="85" cy="85" r="64" fill="none" stroke="#1A2BC4" stroke-width="26"
+            stroke-dasharray="180.6 221.5" stroke-dashoffset="100.5" transform="rotate(-90 85 85)"
+            class="donut-seg" style="transition:stroke-dasharray 1.5s cubic-bezier(.22,1,.36,1);"/>
+          <!-- 25% = 100.5 -->
+          <circle cx="85" cy="85" r="64" fill="none" stroke="#4A5EFF" stroke-width="26"
+            stroke-dasharray="100.5 301.6" stroke-dashoffset="-80.1" transform="rotate(-90 85 85)"
+            class="donut-seg"/>
+          <!-- 20% = 80.4 -->
+          <circle cx="85" cy="85" r="64" fill="none" stroke="#8899FF" stroke-width="26"
+            stroke-dasharray="80.4 321.7" stroke-dashoffset="-181" transform="rotate(-90 85 85)"
+            class="donut-seg"/>
+          <!-- 10% = 40.2 -->
+          <circle cx="85" cy="85" r="64" fill="none" stroke="#C8D0FF" stroke-width="26"
+            stroke-dasharray="40.2 361.9" stroke-dashoffset="-261.5" transform="rotate(-90 85 85)"
+            class="donut-seg"/>
+          <circle cx="85" cy="85" r="50" fill="white"/>
+          <text x="85" y="81" text-anchor="middle" font-family="Syne,sans-serif" font-size="22" font-weight="800" fill="#1A2BC4">100%</text>
+          <text x="85" y="97" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#888">dedicated</text>
+        </svg>
+        <div class="donut-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#1A2BC4"></div>Content Production (45%)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#4A5EFF"></div>Editing & Grading (25%)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#8899FF"></div>Social Management (20%)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#C8D0FF"></div>Strategy & Reporting (10%)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTENT CALENDAR ══════════════════════════════════════════ -->
+<section class="white-bg">
+  <div class="section-eyebrow reveal">Planning</div>
+  <div class="section-title reveal delay-1">Monthly Content Calendar</div>
+  <div class="section-body reveal delay-2">Every month you receive a pre-planned calendar. All posts scripted, scheduled, and ready to go — zero guesswork.</div>
+
+  <div class="calendar-wrap reveal delay-3">
+    <table class="calendar-table">
+      <thead>
+        <tr>
+          <th>Week</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Week 1</td><td><span class="cal-dot reel">R</span></td><td>—</td><td><span class="cal-dot story">S</span></td><td><span class="cal-dot reel">R</span></td><td><span class="cal-dot carousel">C</span></td><td><span class="cal-dot reel">R</span></td><td>—</td></tr>
+        <tr><td>Week 2</td><td><span class="cal-dot reel">R</span></td><td><span class="cal-dot story">S</span></td><td>—</td><td><span class="cal-dot reel">R</span></td><td><span class="cal-dot carousel">C</span></td><td><span class="cal-dot reel">R</span></td><td>—</td></tr>
+        <tr><td>Week 3</td><td><span class="cal-dot reel">R</span></td><td>—</td><td><span class="cal-dot story">S</span></td><td><span class="cal-dot reel">R</span></td><td><span class="cal-dot carousel">C</span></td><td><span class="cal-dot reel">R</span></td><td>—</td></tr>
+        <tr><td>Week 4</td><td><span class="cal-dot reel">R</span></td><td><span class="cal-dot story">S</span></td><td>—</td><td><span class="cal-dot reel">R</span></td><td><span class="cal-dot carousel">C</span></td><td><span class="cal-dot reel">R</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:flex;gap:24px;margin-top:20px;flex-wrap:wrap;" class="reveal delay-4">
+    <div style="display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;color:var(--text-mid);"><span class="cal-dot reel">R</span> Reel (12/month)</div>
+    <div style="display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;color:var(--text-mid);"><span class="cal-dot carousel">C</span> Carousel (4/month)</div>
+    <div style="display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;color:var(--text-mid);"><span class="cal-dot story">S</span> Story / Engagement</div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══════════════════════════════════════════ -->
+<section class="blue-bg">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(107,127,255,0.2) 0%,transparent 55%),radial-gradient(ellipse at 20% 80%,rgba(212,175,55,0.08) 0%,transparent 50%);pointer-events:none;"></div>
+
+  <div class="section-eyebrow reveal">How We Work</div>
+  <div class="section-title reveal delay-1">Our Monthly Process</div>
+
+  <div class="timeline">
+    <div class="timeline-item reveal delay-1">
+      <div class="timeline-dot">1</div>
+      <div class="timeline-content">
+        <h4>Strategy & Planning (Week 1)</h4>
+        <p>Trend research, competitor analysis, content calendar planning, hook & script ideation for the month ahead.</p>
+      </div>
+    </div>
+    <div class="timeline-item reveal delay-2">
+      <div class="timeline-dot">2</div>
+      <div class="timeline-content">
+        <h4>Production (Weeks 1–3)</h4>
+        <p>Shooting days executed — iPhone or cinematic camera depending on package. On-site direction, lighting, and composition handled by our team.</p>
+      </div>
+    </div>
+    <div class="timeline-item reveal delay-3">
+      <div class="timeline-dot">3</div>
+      <div class="timeline-content">
+        <h4>Post-Production (Weeks 2–4)</h4>
+        <p>Editing, colour grading, sound design (Pkg 02), caption writing, hashtag mapping, and carousel photo retouching.</p>
+      </div>
+    </div>
+    <div class="timeline-item reveal delay-4">
+      <div class="timeline-dot">4</div>
+      <div class="timeline-content">
+        <h4>Approval & Scheduling</h4>
+        <p>Content shared for review. Once approved, all posts are scheduled and published per the agreed calendar.</p>
+      </div>
+    </div>
+    <div class="timeline-item reveal delay-5" style="padding-bottom:0;">
+      <div class="timeline-dot">5</div>
+      <div class="timeline-content">
+        <h4>Report & Optimise (End of Month)</h4>
+        <p>Monthly analytics report with performance insights, top-content analysis, and recommendations for the next cycle.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes-box reveal delay-6">
+    <p><strong>Please note:</strong> Travel and accommodation charges are applicable separately. Meta Ads, SEO and influencer collaborations are <strong>not included</strong> in either package and can be scoped separately upon request.</p>
+  </div>
+</section>
+
+<!-- ══ INVESTMENT ══════════════════════════════════════════ -->
+<section class="cream-bg">
+  <div class="section-eyebrow reveal">Investment</div>
+  <div class="section-title reveal delay-1">Transparent Pricing</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px;">
+    <div class="price-card-1 reveal-left delay-2">
+      <div style="font-size:10px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-mid);margin-bottom:12px;">Package 01 · iPhone</div>
+      <div style="font-family:'Syne',sans-serif;font-size:56px;font-weight:800;background:linear-gradient(135deg,var(--blue-dark),var(--blue-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">₹75,000</div>
+      <div style="font-size:12px;color:var(--text-mid);margin-top:6px;margin-bottom:28px;">per month + travel</div>
+      <div style="height:1px;background:linear-gradient(to right,var(--cream-dark),transparent);margin-bottom:20px;"></div>
+      <p style="font-size:13.5px;color:var(--text-mid);line-height:1.75;">Consistent, aesthetically elevated content using iPhone production quality, paired with complete social media management and growth strategy.</p>
+    </div>
+
+    <div class="price-card-2 reveal-right delay-3">
+      <div class="pkg-badge" style="margin-bottom:16px;">⭐ Most Popular</div>
+      <div style="font-size:10px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;">Package 02 · Premium Camera</div>
+      <div style="font-family:'Syne',sans-serif;font-size:56px;font-weight:800;color:white;line-height:1;">₹95,000</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px;margin-bottom:28px;">per month + travel</div>
+      <div style="height:1px;background:rgba(255,255,255,0.15);margin-bottom:20px;"></div>
+      <p style="font-size:13.5px;color:rgba(255,255,255,0.72);line-height:1.75;">Cinematic storytelling with up to 5 dedicated shoot days, professional camera gear, sound design, and complete social management for brands that refuse to settle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════════ -->
+<div class="footer">
+  <div class="reveal">
+    <div class="footer-brand">ShutterStories</div>
+    <div class="footer-contact">Ready to grow your brand? Let's create something beautiful together.</div>
+  </div>
+  <a href="mailto:hello@shutterstories.in" class="footer-cta reveal delay-2">Get Started →</a>
+</div>
+
+<!-- ══ SCRIPTS ══════════════════════════════════════════ -->
+<script>
+// ── Intersection Observer for scroll reveals ──
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => observer.observe(el));
+
+// Trigger cover elements immediately
+document.querySelectorAll('.cover .reveal, .cover .reveal-left, .cover .reveal-right').forEach(el => {
+  setTimeout(() => el.classList.add('visible'), 100);
+});
+
+// ── Animated bar chart ──
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.animated-bar').forEach((bar, i) => {
+        setTimeout(() => {
+          bar.style.width = bar.dataset.width;
+        }, i * 150);
+      });
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.bar-chart').forEach(el => barObserver.observe(el));
+
+// ── Count-up animation for stats ──
+const countEls = document.querySelectorAll('[data-count]');
+const countObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      const duration = 1200;
+      const step = duration / target;
+      let current = 0;
+      const timer = setInterval(() => {
+        current++;
+        el.textContent = current;
+        if (current >= target) clearInterval(timer);
+      }, step);
+      countObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+countEls.forEach(el => countObserver.observe(el));
+
+// ── Hover shimmer on package badges ──
+document.querySelectorAll('.agenda-item').forEach(item => {
+  item.addEventListener('mouseenter', () => {
+    item.style.boxShadow = '0 12px 40px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.2)';
+  });
+  item.addEventListener('mouseleave', () => {
+    item.style.boxShadow = '';
+  });
+});
+</script>
+</body>
+</html>
